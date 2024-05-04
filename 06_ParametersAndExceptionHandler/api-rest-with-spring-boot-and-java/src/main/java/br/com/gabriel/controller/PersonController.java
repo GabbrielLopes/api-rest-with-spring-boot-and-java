@@ -31,7 +31,7 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<Person> create(@RequestBody Person person) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(personService.create(person));
+        return ResponseEntity.status(HttpStatus.CREATED).body(personService.create(person));
     }
 
     @PutMapping
