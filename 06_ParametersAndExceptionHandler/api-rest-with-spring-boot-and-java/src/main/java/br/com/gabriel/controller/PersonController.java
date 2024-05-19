@@ -44,7 +44,7 @@ public class PersonController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
         personService.delete(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
