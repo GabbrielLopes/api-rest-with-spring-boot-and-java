@@ -1,18 +1,18 @@
 package br.com.gabriel.service.interfaces;
 
-import br.com.gabriel.model.Person;
+import br.com.gabriel.vo.v1.PersonVO;
 
 import java.util.List;
 
 public interface PersonService {
 
-    Person findById(Long id);
+    PersonVO findById(Long id);
 
-    List<Person> findAll();
+    List<PersonVO> findAll();
 
-    Person create(Person person);
+    PersonVO create(PersonVO person);
 
-    Person update(Person person);
+    PersonVO update(PersonVO person);
 
     void delete(long id);
 }

@@ -1,15 +1,16 @@
 package br.com.gabriel.service;
 
 import br.com.gabriel.exception.ResourceNotFoundException;
+import br.com.gabriel.mapper.Mapper;
 import br.com.gabriel.model.Person;
 import br.com.gabriel.repository.PersonRepository;
 import br.com.gabriel.service.interfaces.PersonService;
+import br.com.gabriel.vo.v1.PersonVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 @Service
@@ -18,45 +19,50 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository repository;
 
-    private final AtomicLong counter = new AtomicLong();
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
 
     @Override
-    public Person findById(Long id) {
+    public PersonVO findById(Long id) {
         logger.info("Finding a person...");
 
-        return repository.findById(id)
+        Person personEntity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        return Mapper.parseObject(personEntity, PersonVO.class);
     }
 
     @Override
-    public List<Person> findAll() {
+    public List<PersonVO> findAll() {
         logger.info("Finding all people!");
-        return repository.findAll();
+        return Mapper.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
     @Override
     @Transactional
-    public Person create(Person person) {
-        logger.info("Creating one person!");
+    public PersonVO create(PersonVO personVO) {
+        logger.info("Creating one personVO!");
 
-        return repository.save(person);
+        // Realiza conversões de VO para entity / entity para VO
+        Person personEntity = Mapper.parseObject(personVO, Person.class);
+        personVO = Mapper.parseObject(repository.save(personEntity), PersonVO.class);
+
+        return personVO;
     }
 
     @Override
-    public Person update(Person person) {
-        logger.info("Updating one person!");
+    public PersonVO update(PersonVO personVO) {
+        logger.info("Updating one personVO!");
 
-        Person personDBResponse = repository.findById(person.getId())
+        Person personEntity = repository.findById(personVO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-        personDBResponse.setFirstName(person.getFirstName());
-        personDBResponse.setLastName(person.getLastName());
-        personDBResponse.setAddress(person.getAddress());
-        personDBResponse.setGender(person.getGender());
+        personEntity.setFirstName(personVO.getFirstName());
+        personEntity.setLastName(personVO.getLastName());
+        personEntity.setAddress(personVO.getAddress());
+        personEntity.setGender(personVO.getGender());
 
-        return repository.save(personDBResponse);
+        return Mapper.parseObject(repository.save(personEntity), PersonVO.class);
     }
 
     @Override
