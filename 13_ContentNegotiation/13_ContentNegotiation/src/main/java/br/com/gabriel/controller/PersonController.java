@@ -5,6 +5,7 @@ import br.com.gabriel.vo.v1.PersonVO;
 import br.com.gabriel.vo.v2.PersonVOV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,13 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PersonVO> findById(@PathVariable("id") Long id) {
 
         return ResponseEntity.status(HttpStatus.OK).body(personService.findById(id));
     }
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<PersonVO>> findAll() {
 
         return ResponseEntity.status(HttpStatus.OK).body(personService.findAll());
