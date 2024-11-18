@@ -98,8 +98,10 @@ class PersonServiceImplTest {
     }
 
     @Test
-    void createWithNullPerson() {
-        assertThrows(RequiredObjectIsNullException.class, () -> personService.create(null));
+    void createWithNullPersonException() {
+        RequiredObjectIsNullException ex = assertThrows(RequiredObjectIsNullException.class, () -> personService.create(null));
+
+        assertEquals("It is not allowed to persist a null object!", ex.getMessage());
     }
 
     @Test
@@ -150,8 +152,9 @@ class PersonServiceImplTest {
     }
 
     @Test
-    void updateWithNullPerson() {
-        assertThrows(RequiredObjectIsNullException.class, () -> personService.update(null));
+    void updateWithNullPersonException() {
+        RequiredObjectIsNullException ex = assertThrows(RequiredObjectIsNullException.class, () -> personService.update(null));
+        assertEquals("It is not allowed to persist a null object!", ex.getMessage());
     }
 
     @Test
