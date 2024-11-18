@@ -49,7 +49,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<PersonVO> findAll() {
         logger.info("Finding all people!");
-        return Mapper.parseListObjects(repository.findAll(), PersonVO.class);
+        List<PersonVO> personVOs = Mapper.parseListObjects(repository.findAll(), PersonVO.class);
+        personVOs.forEach(vo -> vo.add(
+                linkTo(
+                        methodOn(PersonController.class).findById(vo.getKey()))
+                        .withSelfRel()));
+        return personVOs;
     }
 
     @Override
@@ -60,7 +65,10 @@ public class PersonServiceImpl implements PersonService {
         // Realiza conversões de VO para entity / entity para VO
         Person personEntity = Mapper.parseObject(personVO, Person.class);
         personVO = Mapper.parseObject(repository.save(personEntity), PersonVO.class);
-
+        personVO.add(
+                linkTo(
+                        methodOn(PersonController.class).findById(personVO.getKey()))
+                        .withSelfRel());
         return personVO;
     }
 
@@ -88,7 +96,12 @@ public class PersonServiceImpl implements PersonService {
         personEntity.setAddress(personVO.getAddress());
         personEntity.setGender(personVO.getGender());
 
-        return Mapper.parseObject(repository.save(personEntity), PersonVO.class);
+        PersonVO vo = Mapper.parseObject(repository.save(personEntity), PersonVO.class);
+        vo.add(
+                linkTo(
+                        methodOn(PersonController.class).findById(personVO.getKey()))
+                        .withSelfRel());
+        return vo;
     }
 
     @Override
