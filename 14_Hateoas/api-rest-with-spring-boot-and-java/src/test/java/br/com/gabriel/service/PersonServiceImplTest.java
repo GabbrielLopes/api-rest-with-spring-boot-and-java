@@ -1,5 +1,6 @@
 package br.com.gabriel.service;
 
+import br.com.gabriel.exception.RequiredObjectIsNullException;
 import br.com.gabriel.mapper.custom.PersonMapper;
 import br.com.gabriel.mapper.mocks.MockPerson;
 import br.com.gabriel.model.Person;
@@ -97,6 +98,11 @@ class PersonServiceImplTest {
     }
 
     @Test
+    void createWithNullPerson() {
+        assertThrows(RequiredObjectIsNullException.class, () -> personService.create(null));
+    }
+
+    @Test
     void createV2() {
         Person person = input.mockEntity(7);
         personVOV2.setId(7L);
@@ -141,6 +147,11 @@ class PersonServiceImplTest {
 
         assertNotNull(response);
         assertEquals(personVO.getFirstName(), response.getFirstName());
+    }
+
+    @Test
+    void updateWithNullPerson() {
+        assertThrows(RequiredObjectIsNullException.class, () -> personService.update(null));
     }
 
     @Test

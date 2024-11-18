@@ -1,6 +1,7 @@
 package br.com.gabriel.service;
 
 import br.com.gabriel.controller.PersonController;
+import br.com.gabriel.exception.RequiredObjectIsNullException;
 import br.com.gabriel.exception.ResourceNotFoundException;
 import br.com.gabriel.mapper.Mapper;
 import br.com.gabriel.mapper.custom.PersonMapper;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -62,6 +64,8 @@ public class PersonServiceImpl implements PersonService {
     public PersonVO create(PersonVO personVO) {
         logger.info("Creating one personVO!");
 
+        validaInputNull(personVO);
+
         // Realiza conversões de VO para entity / entity para VO
         Person personEntity = Mapper.parseObject(personVO, Person.class);
         personVO = Mapper.parseObject(repository.save(personEntity), PersonVO.class);
@@ -77,6 +81,8 @@ public class PersonServiceImpl implements PersonService {
     public PersonVOV2 createV2(PersonVOV2 personVO) {
         logger.info("Creating one personVOV2!");
 
+        validaInputNull(personVO);
+
         // Realiza conversões customizadas
         Person personEntity = personMapper.convertVoToEntity(personVO);
         personVO = personMapper.convertEntityToVo(repository.save(personEntity));
@@ -87,6 +93,8 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonVO update(PersonVO personVO) {
         logger.info("Updating one personVO!");
+
+        validaInputNull(personVO);
 
         Person personEntity = repository.findById(personVO.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
@@ -102,6 +110,18 @@ public class PersonServiceImpl implements PersonService {
                         methodOn(PersonController.class).findById(personVO.getKey()))
                         .withSelfRel());
         return vo;
+    }
+
+    private static void validaInputNull(PersonVO personVO) {
+        if(Objects.isNull(personVO)){
+            throw new RequiredObjectIsNullException();
+        }
+    }
+
+    private static void validaInputNull(PersonVOV2 personVO) {
+        if(Objects.isNull(personVO)){
+            throw new RequiredObjectIsNullException();
+        }
     }
 
     @Override
