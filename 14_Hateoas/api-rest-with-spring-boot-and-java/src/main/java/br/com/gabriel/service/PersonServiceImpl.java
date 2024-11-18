@@ -1,5 +1,6 @@
 package br.com.gabriel.service;
 
+import br.com.gabriel.controller.PersonController;
 import br.com.gabriel.exception.ResourceNotFoundException;
 import br.com.gabriel.mapper.Mapper;
 import br.com.gabriel.mapper.custom.PersonMapper;
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -34,7 +38,12 @@ public class PersonServiceImpl implements PersonService {
         Person personEntity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-        return Mapper.parseObject(personEntity, PersonVO.class);
+        PersonVO vo = Mapper.parseObject(personEntity, PersonVO.class);
+        vo.add(
+                linkTo(
+                        methodOn(PersonController.class).findById(id))
+                        .withSelfRel());
+        return vo;
     }
 
     @Override
@@ -71,7 +80,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonVO update(PersonVO personVO) {
         logger.info("Updating one personVO!");
 
-        Person personEntity = repository.findById(personVO.getId())
+        Person personEntity = repository.findById(personVO.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
         personEntity.setFirstName(personVO.getFirstName());

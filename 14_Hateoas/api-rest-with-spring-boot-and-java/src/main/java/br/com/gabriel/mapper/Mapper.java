@@ -1,5 +1,7 @@
 package br.com.gabriel.mapper;
 
+import br.com.gabriel.model.Person;
+import br.com.gabriel.vo.v1.PersonVO;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
@@ -8,6 +10,13 @@ import java.util.stream.Collectors;
 public class Mapper {
 
     private static ModelMapper mapper = new ModelMapper();
+
+    static {
+        mapper.createTypeMap(
+                Person.class,
+                PersonVO.class)
+                .addMapping(Person::getId, PersonVO::setKey);
+    }
 
     public static <O, D> D parseObject(O origin, Class<D> destination) {
         return mapper.map(origin, destination);
