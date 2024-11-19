@@ -1,6 +1,8 @@
 package br.com.gabriel.mapper;
 
+import br.com.gabriel.model.Book;
 import br.com.gabriel.model.Person;
+import br.com.gabriel.vo.v1.BookVO;
 import br.com.gabriel.vo.v1.PersonVO;
 import org.modelmapper.ModelMapper;
 
@@ -21,6 +23,17 @@ public class Mapper {
                         PersonVO.class,
                         Person.class)
                 .addMapping(PersonVO::getKey, Person::setId);
+
+        mapper.createTypeMap(
+                        Book.class,
+                        BookVO.class)
+                .addMapping(Book::getId, BookVO::setKey);
+
+        mapper.createTypeMap(
+                        BookVO.class,
+                        Book.class)
+                .addMapping(BookVO::getKey, Book::setId);
+
     }
 
     public static <O, D> D parseObject(O origin, Class<D> destination) {
