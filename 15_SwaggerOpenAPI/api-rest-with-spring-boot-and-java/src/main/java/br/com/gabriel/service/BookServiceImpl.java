@@ -1,7 +1,6 @@
 package br.com.gabriel.service;
 
 import br.com.gabriel.controller.BookController;
-import br.com.gabriel.controller.PersonController;
 import br.com.gabriel.exception.RequiredObjectIsNullException;
 import br.com.gabriel.exception.ResourceNotFoundException;
 import br.com.gabriel.mapper.Mapper;
@@ -73,7 +72,7 @@ public class BookServiceImpl implements BookService {
         bookVO = Mapper.parseObject(repository.save(bookEntity), BookVO.class);
         bookVO.add(
                 linkTo(
-                        methodOn(PersonController.class).findById(bookVO.getKey()))
+                        methodOn(BookController.class).findById(bookVO.getKey()))
                         .withSelfRel());
         return bookVO;
     }
@@ -92,7 +91,7 @@ public class BookServiceImpl implements BookService {
         BookVO vo = Mapper.parseObject(repository.save(bookEntity), BookVO.class);
         vo.add(
                 linkTo(
-                        methodOn(PersonController.class).findById(bookVO.getKey()))
+                        methodOn(BookController.class).findById(bookVO.getKey()))
                         .withSelfRel());
         return vo;
     }

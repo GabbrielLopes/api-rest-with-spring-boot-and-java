@@ -3,7 +3,6 @@ package br.com.gabriel.controller;
 import br.com.gabriel.service.interfaces.BookService;
 import br.com.gabriel.util.MediaType;
 import br.com.gabriel.vo.v1.BookVO;
-import br.com.gabriel.vo.v1.PersonVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
