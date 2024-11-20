@@ -18,12 +18,17 @@
 		<model-mapper.version>3.0.0</model-mapper.version>
 		<spring-doc-version>2.0.2</spring-doc-version>
 		<testcontainers-version>1.16.3</testcontainers-version>
-		<rest-assured-version>4.5.0</rest-assured-version>
+		<rest-assured-version>5.1.1</rest-assured-version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
