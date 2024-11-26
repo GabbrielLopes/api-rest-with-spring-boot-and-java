@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//@CrossOrigin
 @RestController
 @RequestMapping("/person")
 @Tag(name = "People", description = "Endpoints for managing People")
@@ -26,6 +27,7 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON,
@@ -70,6 +72,7 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.OK).body(personService.findAll());
     }
 
+    @CrossOrigin(origins = {"http://localhost:8080", "https://teste.com.br"})
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON,
                     MediaType.APPLICATION_XML,
