@@ -27,7 +27,7 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @CrossOrigin(origins = "http://localhost:8080")
+//    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON,
@@ -72,7 +72,7 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.OK).body(personService.findAll());
     }
 
-    @CrossOrigin(origins = {"http://localhost:8080", "https://teste.com.br"})
+//    @CrossOrigin(origins = {"http://localhost:8080", "https://teste.com.br"})
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON,
                     MediaType.APPLICATION_XML,
