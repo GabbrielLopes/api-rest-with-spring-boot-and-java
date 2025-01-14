@@ -1,0 +1,36 @@
+Para aplicar as migrations via linha de comando (estando fora da IDE)
+Podemos rodar o comando na raiz do projeto:
+
+mvn clean package spring-boot:run -DskipTests
+
+OBS: não é ideal pular os testes (adicionado o -DskipTests, os testes serão pulados.)
+
+---
+Também podemos aplicar de outra maneira, com o plugin do flyway:
+
+<plugin>
+    <groupId>org.flywaydb</groupId>
+    <artifactId>flyway-maven-plugin</artifactId>
+    <configuration>														<!-- As vezes não é necessario o useSSL=false, depende da versão do java-->
+        <url>jdbc:mysql://localhost:3306/rest_with_spring_boot_erudio?useTimezone=true&amp;serverTimezone=UTC&amp;useSSL=false</url>
+        <user>admin</user>
+        <password>admin</password>
+    </configuration>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <exclusions>
+                <exclusion> <!-- Aqui excluimos o Slf4, pois o spring ja sobe uma versão então dará conflito -->
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+</plugin>
+
+Com esse plugin instalado, podemos ir na raiz do projeto e usar o comando:
+
+mvn flyway:migrate
